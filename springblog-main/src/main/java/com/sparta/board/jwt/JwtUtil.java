@@ -54,7 +54,7 @@ public class JwtUtil {
     // 토큰 생성
     public String createToken(String username, UserRoleEnum role) {
         Date date = new Date();
-
+        this.username=username;
         return BEARER_PREFIX +
                 Jwts.builder()
                         .setSubject(username) // 사용자 식별자값(ID)
@@ -64,7 +64,10 @@ public class JwtUtil {
                         .signWith(key, signatureAlgorithm) // 암호화 알고리즘
                         .compact();
     }
-
+    String username;
+    public String getUsername(){
+        return username;
+    }
     // header 에서 JWT 가져오기
     public String getJwtFromHeader(HttpServletRequest request) {
         String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
