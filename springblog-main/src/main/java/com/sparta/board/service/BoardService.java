@@ -5,8 +5,10 @@ import com.sparta.board.dto.MessageResponseDto;
 import com.sparta.board.dto.PostRequestDto;
 import com.sparta.board.dto.PostResponseDto;
 import com.sparta.board.entity.Board;
+import com.sparta.board.entity.Cmt;
 import com.sparta.board.jwt.JwtUtil;
 import com.sparta.board.repository.BoardRepository;
+import com.sparta.board.repository.CmtRepository;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
@@ -23,6 +25,7 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
     private final JwtUtil jwtUtil;
+    private final CmtRepository cmtRepository;
     @Transactional
     public PostResponseDto createPost(PostRequestDto requestDto, HttpServletRequest req) {
         String token = jwtUtil.getJwtFromHeader(req);
@@ -38,14 +41,26 @@ public class BoardService {
         Board savePost = boardRepository.save(board);
         return new PostResponseDto(savePost);
     }
+    @Transactional
      public List<PostResponseDto> getPosts() {
+        for(Long i=1L;i<= boardRepository.count();i++){
+            Board board = findPost(i);
+            List<Cmt> updatedCommentList = getcmt(i);
+            board.update(updatedCommentList);
+        }
         return boardRepository.findAllByOrderByModifiedAtDesc()
                 .stream()
                 .map(PostResponseDto::new)
                 .collect(Collectors.toList());
     }
-     public PostResponseDto getPost(Long id) {
+    public List<Cmt> getcmt(Long id) {
+        return cmtRepository.findAllBypostid(id);
+    }
+    @Transactional
+    public PostResponseDto getPost(Long id) {
         Board board = findPost(id);
+        List<Cmt> updatedCommentList = getcmt(id);
+        board.update(updatedCommentList);
         return new PostResponseDto(board);
     }
 

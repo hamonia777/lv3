@@ -19,7 +19,7 @@ public class CmtController {
         return cmtResponseDto;
     }
 
-    @GetMapping("/comment/board")
+    @PostMapping("/comment/board")
     public PostResponseDto insertcmt(@RequestBody CmtRequestDto cmtRequestDto){
         return cmtService.insertcmt(cmtRequestDto.getPostid());
     }
