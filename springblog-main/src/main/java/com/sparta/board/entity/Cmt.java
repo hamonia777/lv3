@@ -28,6 +28,12 @@ public class Cmt extends Timestamped {
         this.comment = cmtRequestDto.getComment();
     }
 
+    public Cmt(Cmt cmt) {
+        this.postid=cmt.getPostid();
+        this.username=cmt.getUsername();
+        this.comment= cmt.username;
+    }
+
     public void update(CmtRequestDto cmtRequestDto) {
         this.comment = cmtRequestDto.getComment();
     }

@@ -18,7 +18,7 @@ public class PostResponseDto {
     private String contents;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
-//    List<Cmt> commentlist=new ArrayList<>();
+    List<Cmt> commentlist=new ArrayList<>();
     public PostResponseDto(Board board){
         this.id = board.getId();
         this.title = board.getTitle();
@@ -26,7 +26,7 @@ public class PostResponseDto {
         this.contents = board.getContents();
         this.createdAt = board.getCreatedAt();
         this.modifiedAt = board.getModifiedAt();
-//        this.commentlist=board.getCommentlist();
+        this.commentlist=board.getCommentlist();
     }
 
 }

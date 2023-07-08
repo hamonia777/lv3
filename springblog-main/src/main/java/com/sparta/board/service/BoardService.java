@@ -1,5 +1,6 @@
 package com.sparta.board.service;
 
+import com.sparta.board.dto.DeleteDto;
 import com.sparta.board.dto.MessageResponseDto;
 import com.sparta.board.dto.PostRequestDto;
 import com.sparta.board.dto.PostResponseDto;
@@ -14,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -21,7 +23,7 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
     private final JwtUtil jwtUtil;
-
+    @Transactional
     public PostResponseDto createPost(PostRequestDto requestDto, HttpServletRequest req) {
         String token = jwtUtil.getJwtFromHeader(req);
         if(!jwtUtil.validateToken(token)){
@@ -36,12 +38,13 @@ public class BoardService {
         Board savePost = boardRepository.save(board);
         return new PostResponseDto(savePost);
     }
-
-    public List<PostResponseDto> getPosts() {
-        return boardRepository.findAllByOrderByModifiedAtDesc().stream().map(PostResponseDto::new).toList();
+     public List<PostResponseDto> getPosts() {
+        return boardRepository.findAllByOrderByModifiedAtDesc()
+                .stream()
+                .map(PostResponseDto::new)
+                .collect(Collectors.toList());
     }
-
-    public PostResponseDto getPost(Long id) {
+     public PostResponseDto getPost(Long id) {
         Board board = findPost(id);
         return new PostResponseDto(board);
     }
