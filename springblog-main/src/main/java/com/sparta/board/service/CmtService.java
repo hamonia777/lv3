@@ -10,7 +10,8 @@ import com.sparta.board.repository.BoardRepository;
 import com.sparta.board.repository.CmtRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,30 +23,62 @@ public class CmtService {
     private final CmtRepository cmtRepository;
     private final JwtUtil jwtUtil;
     private final BoardRepository boardRepository;
-    @Transactional
-     public CmtResponseDto createcmt(CmtRequestDto cmtRequestDto) {
+//     public CmtResponseDto createcmt(CmtRequestDto cmtRequestDto) {
+//
 //        String username="";
 //        Long id= cmtRequestDto.getPostid();
 //        Cmt cmt= new Cmt(cmtRequestDto,username);
 //        Cmt savecmt=cmtRepository.save(cmt);
-//        Board board = findPost(id);
+//        Board board =findPost(id);
+//        List<Cmt> updatedCommentList = getcmt(id);
+//        board.setList(updatedCommentList);
 //        return new CmtResponseDto(savecmt);
-        String username="";
-        Long id= cmtRequestDto.getPostid();
-        Cmt cmt= new Cmt(cmtRequestDto,username);
-        Cmt savecmt=cmtRepository.save(cmt);
-         Board board =findPost(id);
-         List<Cmt> list=board.getCommentlist();
-         List<Cmt> updatedCommentList = getcmt(id);
-         list.addAll(updatedCommentList);
-         return new CmtResponseDto(savecmt);
+//    }
+//    @Transactional
+//    public CmtResponseDto createcmt(CmtRequestDto cmtRequestDto) {
+//        String username = "";
+//        Long id = cmtRequestDto.getPostid();
+//        Cmt cmt = new Cmt(cmtRequestDto, username);
+//        Cmt savecmt = cmtRepository.save(cmt);
+//        Board board = findPost(id);
+//        List<Cmt> updatedCommentList = getcmt(id);
+//        updatedCommentList.add(cmt); // 새로운 Cmt 객체를 commentlist에 추가
+//        board.setList(updatedCommentList);
+//
+//        boardRepository.save(board); // board 객체 저장하여 변경 내용을 영속성 컨텍스트에 반영
+//
+//        return new CmtResponseDto(savecmt);
+//
+//    }
+@Transactional
+public CmtResponseDto createcmt(CmtRequestDto cmtRequestDto) {
+    String username = "";
+     Cmt cmt = new Cmt(cmtRequestDto, username);
+    Cmt savecmt = cmtRepository.save(cmt);
+//    Long id = cmtRequestDto.getPostid();
+//    Board board = findPost(id);
+//    String a="";
+//    a="a";
+//    List<Cmt> updatedCommentList = getcmt(id);
+//    updatedCommentList.add(cmt);
+//    board.addCmt(cmt);
+//
+//    boardRepository.save(board);
+
+    return new CmtResponseDto(savecmt);
+}
+    public PostResponseDto insertcmt(Long id){
+    Board board = findPost(id);
+    List<Cmt> updatedCommentList = getcmt(id);
+//    board.setList(updatedCommentList);
+//    boardRepository.save(board);
+    board.update(updatedCommentList);
+    PostResponseDto responseDto =new PostResponseDto(board);
+    return responseDto;
     }
 
     public List<Cmt> getcmt(Long id) {
-        return cmtRepository.findAllBypostid(id)
-                .stream()
-                .map(Cmt::new)
-                .collect(Collectors.toList());
+        return cmtRepository.findAllBypostid(id);
     }
      public CmtResponseDto updatecmt(Long id, CmtRequestDto cmtRequestDto) {
         Cmt cmt = findcmt(id);

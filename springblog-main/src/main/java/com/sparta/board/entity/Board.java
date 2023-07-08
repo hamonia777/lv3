@@ -25,21 +25,26 @@ public class Board extends Timestamped{
     @Column(name = "contents", nullable = false, length = 500)
     private String contents;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "board")
     @Column(name="commnetlist",nullable = true)
-    List<Cmt> commentlist=new ArrayList<>();
+    List<Cmt> commentlist;
 
-    public List<Cmt> getList(){
-        return this.commentlist;
+    public void setList(List<Cmt> commentlist){
+        this.commentlist=commentlist;
     }
     public Board(PostRequestDto requestDto, String username) {
         this.username = username;
         this.title = requestDto.getTitle();
         this.contents = requestDto.getContents();
     }
-
+    public void addCmt(Cmt cmt) {
+        this.commentlist.add(cmt);
+    }
     public void update(PostRequestDto requestDto){
         this.title = requestDto.getTitle();
         this.contents = requestDto.getContents();
+    }
+    public void update(List<Cmt> commentlist){
+        this.commentlist=commentlist;
     }
 }

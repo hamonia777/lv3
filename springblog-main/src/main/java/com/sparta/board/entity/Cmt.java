@@ -1,10 +1,7 @@
 package com.sparta.board.entity;
 
 import com.sparta.board.dto.CmtRequestDto;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,6 +19,9 @@ public class Cmt extends Timestamped {
     private Long postid;
     private String username;
     private String comment;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "board")
+    private Board board;
 
     public Cmt(CmtRequestDto cmtRequestDto, String username) {
         this.postid = cmtRequestDto.getPostid();
