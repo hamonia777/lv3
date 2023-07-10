@@ -1,6 +1,5 @@
 package com.sparta.board.controller;
 
-import com.sparta.board.dto.CommentResponseDto;
 import com.sparta.board.dto.MessageResponseDto;
 import com.sparta.board.dto.PostRequestDto;
 import com.sparta.board.dto.PostResponseDto;
