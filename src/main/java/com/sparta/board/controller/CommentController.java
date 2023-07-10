@@ -27,7 +27,7 @@ public class CommentController {
         return ResponseEntity.ok().body(responseDto);
     }
 
-    @DeleteMapping("/comment/{cmt_num}") //게시글 삭제
+    @DeleteMapping("/comment/{cmt_num}")
     public ResponseEntity<MessageResponseDto> deletePost(@PathVariable Long cmt_num, HttpServletRequest req){
         commentService.deleteComment(cmt_num, req);
         return ResponseEntity.ok().body(new MessageResponseDto("삭제 완료", HttpStatus.OK.value()));

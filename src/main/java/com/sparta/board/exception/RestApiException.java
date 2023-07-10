@@ -1,10 +1,11 @@
-package com.sparta.board.dto;
+package com.sparta.board.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+
 @Getter
 @AllArgsConstructor
-public class MessageResponseDto {
-    private String msg;
+public class RestApiException {
+    private String errorMessage;
     private int statusCode;
 }

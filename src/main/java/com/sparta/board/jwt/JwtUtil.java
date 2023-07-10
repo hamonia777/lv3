@@ -1,7 +1,9 @@
 package com.sparta.board.jwt;
 
+import com.sparta.board.entity.Comment;
 import com.sparta.board.entity.User;
 import com.sparta.board.entity.UserRoleEnum;
+import com.sparta.board.repository.UserRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
@@ -31,6 +33,7 @@ public class JwtUtil {
     private String secretKey;
     private Key key;
     private final SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
+
 
     @PostConstruct
     public void init() {
@@ -97,21 +100,12 @@ public class JwtUtil {
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
     }
 
-
-    public void validateTokenAndUser(HttpServletRequest req, User user){
-        String token = getJwtFromHeader(req);
-        if(validateToken(token)){
-            Claims claims = getUserInfoFromToken(token);
-            String username = claims.getSubject();
-            if(!(username.equals(user.getUsername()))){
-                throw new IllegalArgumentException("작성자만 삭제/수정할 수 있습니다.");
-            }
-        }
-    }
-
+    // 토큰에서 사용자이름 가져오기
     public String findUsername(HttpServletRequest req){
         String token = getJwtFromHeader(req);
-        validateToken(token);
+        if(!validateToken(token)){
+            throw new IllegalArgumentException("토큰이 유효하지 않습니다.");
+        }
         Claims claims = getUserInfoFromToken(token);
         return claims.getSubject();
     }

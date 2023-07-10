@@ -28,7 +28,9 @@ public class CommentService {
     public CommentResponseDto createComment(CommentRequestDto requestDto, HttpServletRequest req) {
         Board board = boardRepository.findById(requestDto.getPost_id()).orElseThrow(() ->
                 new IllegalArgumentException("게시글을 찾을 수 없습니다."));
-        User user = userRepository.findByUsername(jwtUtil.findUsername(req)).get();
+        User user = userRepository.findByUsername(jwtUtil.findUsername(req)).orElseThrow(
+                () -> new IllegalArgumentException("회원을 찾을 수 없습니다.")
+        );
         Comment comment = new Comment(requestDto, user, board);
         Comment saveComment = commentRepository.save(comment);
         return new CommentResponseDto(saveComment);
@@ -38,9 +40,13 @@ public class CommentService {
     public CommentResponseDto updateComment(Long id, CommentRequestDto requestDto, HttpServletRequest req) {
         Comment comment = commentRepository.findById(id).orElseThrow(()->
                 new IllegalArgumentException("댓글을 찾을 수 없습니다."));
-        User user = userRepository.findByUsername(jwtUtil.findUsername(req)).get();
+        User user = userRepository.findByUsername(jwtUtil.findUsername(req)).orElseThrow(
+                () -> new IllegalArgumentException("회원을 찾을 수 없습니다.")
+        );
         if(!(user.getRole() == UserRoleEnum.ADMIN)){
-            jwtUtil.validateTokenAndUser(req, user);
+            if(!user.getUsername().equals(comment.getUser().getUsername())){
+                throw new IllegalArgumentException("작성자만 삭제/수정할 수 있습니다.");
+            }
         }
         comment.update(requestDto);
         return new CommentResponseDto(comment);
@@ -49,9 +55,13 @@ public class CommentService {
     public void deleteComment(Long id, HttpServletRequest req){
         Comment comment = commentRepository.findById(id).orElseThrow(()->
                 new IllegalArgumentException("댓글을 찾을 수 없습니다."));
-        User user = userRepository.findByUsername(jwtUtil.findUsername(req)).get();
+        User user = userRepository.findByUsername(jwtUtil.findUsername(req)).orElseThrow(
+                () -> new IllegalArgumentException("회원을 찾을 수 없습니다.")
+        );
         if(!(user.getRole() == UserRoleEnum.ADMIN)){
-            jwtUtil.validateTokenAndUser(req, user);
+            if(!user.getUsername().equals(comment.getUser().getUsername())){
+                throw new IllegalArgumentException("작성자만 삭제/수정할 수 있습니다.");
+            }
         }
         commentRepository.delete(comment);
     }

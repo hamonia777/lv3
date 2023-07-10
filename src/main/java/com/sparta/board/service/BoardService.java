@@ -11,7 +11,6 @@ import com.sparta.board.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,7 +24,9 @@ public class BoardService {
     private final JwtUtil jwtUtil;
 
     public PostResponseDto createPost(PostRequestDto requestDto, HttpServletRequest req) {
-        User user = userRepository.findByUsername(jwtUtil.findUsername(req)).get();
+        User user = userRepository.findByUsername(jwtUtil.findUsername(req)).orElseThrow(
+                () -> new IllegalArgumentException("회원을 찾을 수 없습니다.")
+        );
         Board board = new Board(requestDto, user);
         Board savePost = boardRepository.save(board);
         return new PostResponseDto(savePost);
@@ -45,9 +46,13 @@ public class BoardService {
     @Transactional
     public PostResponseDto updatePost(Long id, PostRequestDto requestDto, HttpServletRequest req) {
         Board board = findPost(id);
-        User user = new User();
+        User user = userRepository.findByUsername(jwtUtil.findUsername(req)).orElseThrow(
+                () -> new IllegalArgumentException("회원을 찾을 수 없습니다.")
+        );
         if(!(user.getRole() == UserRoleEnum.ADMIN)){
-            jwtUtil.validateTokenAndUser(req, user);
+            if(!user.getUsername().equals(board.getUsername())){
+                throw new IllegalArgumentException("작성자만 삭제/수정할 수 있습니다.");
+            }
         }
         board.update(requestDto);
         return new PostResponseDto(board);
@@ -55,9 +60,13 @@ public class BoardService {
 
     public void deletePost(Long id, HttpServletRequest req) {
         Board board = findPost(id);
-        User user = new User();
+        User user = userRepository.findByUsername(jwtUtil.findUsername(req)).orElseThrow(
+                () -> new IllegalArgumentException("회원을 찾을 수 없습니다.")
+        );
         if(!(user.getRole() == UserRoleEnum.ADMIN)){
-            jwtUtil.validateTokenAndUser(req, user);
+            if(!user.getUsername().equals(board.getUsername())){
+                throw new IllegalArgumentException("작성자만 삭제/수정할 수 있습니다.");
+            }
         }
         boardRepository.delete(board);
     }
