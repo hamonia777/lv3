@@ -1,11 +1,14 @@
 package com.sparta.board.controller;
 
+import com.sparta.board.dto.CommentResponseDto;
 import com.sparta.board.dto.MessageResponseDto;
 import com.sparta.board.dto.PostRequestDto;
 import com.sparta.board.dto.PostResponseDto;
 import com.sparta.board.service.BoardService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,8 +21,9 @@ public class BoardController {
     private final BoardService boardService;
 
     @PostMapping("/post") // 게시글 작성
-    public PostResponseDto createPost(@RequestBody PostRequestDto requestDto, HttpServletRequest req){
-        return boardService.createPost(requestDto, req);
+    public ResponseEntity<PostResponseDto> createPost(@RequestBody PostRequestDto requestDto, HttpServletRequest req) {
+        PostResponseDto responseDto = boardService.createPost(requestDto, req);
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
 
     @GetMapping("/posts") //전체 게시글 조회
@@ -33,12 +37,14 @@ public class BoardController {
     }
 
     @PutMapping("/post/{id}") // 게시글 수정
-    public PostResponseDto updatePost(@PathVariable Long id, @RequestBody PostRequestDto requestDto, HttpServletRequest req){
-        return boardService.updatePost(id, requestDto, req);
+    public ResponseEntity<PostResponseDto> updatePost(@PathVariable Long id, @RequestBody PostRequestDto requestDto, HttpServletRequest req){
+        PostResponseDto responseDto = boardService.updatePost(id, requestDto, req);
+        return ResponseEntity.ok().body(responseDto);
     }
 
     @DeleteMapping("/post/{id}") //게시글 삭제
-    public MessageResponseDto deletePost(@PathVariable Long id, @RequestBody PostRequestDto requestDto, HttpServletRequest req){
-        return boardService.deletePost(id, requestDto, req);
+    public ResponseEntity<MessageResponseDto> deletePost(@PathVariable Long id, HttpServletRequest req){
+        boardService.deletePost(id, req);
+        return ResponseEntity.ok().body(new MessageResponseDto("삭제 완료", HttpStatus.OK.value()));
     }
 }

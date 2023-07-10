@@ -8,6 +8,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,12 +24,14 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/user/login")
-    public MessageResponseDto login(@RequestBody LoginRequestDto requestDto, HttpServletResponse res) {
-        return userService.login(requestDto, res);
+    public ResponseEntity<MessageResponseDto> login(@RequestBody LoginRequestDto requestDto, HttpServletResponse res) {
+        userService.login(requestDto, res);
+        return ResponseEntity.ok().body(new MessageResponseDto("로그인 성공", HttpStatus.CREATED.value()));
     }
 
     @PostMapping("/user/signup")
-    public MessageResponseDto signup(@Valid @RequestBody SignupRequestDto requestDto) {
-        return userService.signup(requestDto);
+    public ResponseEntity<MessageResponseDto> signup(@Valid @RequestBody SignupRequestDto requestDto) {
+        userService.signup(requestDto);
+        return ResponseEntity.ok().body(new MessageResponseDto("회원가입 성공", HttpStatus.CREATED.value()));
     }
 }

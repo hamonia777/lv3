@@ -1,5 +1,6 @@
 package com.sparta.board.jwt;
 
+import com.sparta.board.entity.User;
 import com.sparta.board.entity.UserRoleEnum;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
@@ -94,5 +95,24 @@ public class JwtUtil {
     // 토큰에서 사용자 정보 가져오기
     public Claims getUserInfoFromToken(String token) {
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
+    }
+
+
+    public void validateTokenAndUser(HttpServletRequest req, User user){
+        String token = getJwtFromHeader(req);
+        if(validateToken(token)){
+            Claims claims = getUserInfoFromToken(token);
+            String username = claims.getSubject();
+            if(!(username.equals(user.getUsername()))){
+                throw new IllegalArgumentException("작성자만 삭제/수정할 수 있습니다.");
+            }
+        }
+    }
+
+    public String findUsername(HttpServletRequest req){
+        String token = getJwtFromHeader(req);
+        validateToken(token);
+        Claims claims = getUserInfoFromToken(token);
+        return claims.getSubject();
     }
 }
