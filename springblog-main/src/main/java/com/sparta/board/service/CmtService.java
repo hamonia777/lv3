@@ -50,22 +50,7 @@ public class CmtService {
 //        return new CmtResponseDto(savecmt);
 //
 //    }
-@Transactional
-public CmtResponseDto createcmt(CmtRequestDto cmtRequestDto) {
-    String username = "";
-     Cmt cmt = new Cmt(cmtRequestDto, username);
-    Cmt savecmt = cmtRepository.save(cmt);
-//    Long id = cmtRequestDto.getPostid();
-//    Board board = findPost(id);
-//    String a="";
-//    a="a";
-//    List<Cmt> updatedCommentList = getcmt(id);
-//    updatedCommentList.add(cmt);
-//    board.addCmt(cmt);
-//
-//    boardRepository.save(board);
 
-<<<<<<< HEAD
     @Transactional
     public CmtResponseDto createcmt(CmtRequestDto cmtRequestDto) {
         String username = "";
@@ -75,9 +60,7 @@ public CmtResponseDto createcmt(CmtRequestDto cmtRequestDto) {
         return new CmtResponseDto(savecmt);
     }
 
-=======
-    return new CmtResponseDto(savecmt);
-}
+
     public PostResponseDto insertcmt(Long id){
     Board board = findPost(id);
     List<Cmt> updatedCommentList = getcmt(id);
@@ -91,7 +74,7 @@ public CmtResponseDto createcmt(CmtRequestDto cmtRequestDto) {
     public List<Cmt> getcmt(Long id) {
         return cmtRepository.findAllBypostid(id);
     }
->>>>>>> parent of 05c785a (save point 4)
+
      public CmtResponseDto updatecmt(Long id, CmtRequestDto cmtRequestDto) {
         Cmt cmt = findcmt(id);
         cmt.update(cmtRequestDto);

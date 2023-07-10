@@ -5,8 +5,10 @@ import com.sparta.board.dto.MessageResponseDto;
 import com.sparta.board.dto.PostRequestDto;
 import com.sparta.board.dto.PostResponseDto;
 import com.sparta.board.entity.Board;
+import com.sparta.board.entity.Cmt;
 import com.sparta.board.jwt.JwtUtil;
 import com.sparta.board.repository.BoardRepository;
+import com.sparta.board.repository.CmtRepository;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
@@ -20,7 +22,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class BoardService {
-
+    private final CmtRepository cmtRepository;
     private final BoardRepository boardRepository;
     private final JwtUtil jwtUtil;
     @Transactional
@@ -40,12 +42,8 @@ public class BoardService {
                 .map(PostResponseDto::new)
                 .collect(Collectors.toList());
     }
-<<<<<<< HEAD
      @Transactional
-    public PostResponseDto getPost(Long id) {
-=======
      public PostResponseDto getPost(Long id) {
->>>>>>> parent of 05c785a (save point 4)
         Board board = findPost(id);
         return new PostResponseDto(board);
     }

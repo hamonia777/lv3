@@ -18,16 +18,12 @@ public class CmtController {
         return cmtResponseDto;
     }
 
-<<<<<<< HEAD
-    @PutMapping("/comment/{id}")//댓글 번호
-=======
     @GetMapping("/comment/board")
     public PostResponseDto insertcmt(@RequestBody CmtRequestDto cmtRequestDto){
         return cmtService.insertcmt(cmtRequestDto.getPostid());
     }
 
     @PutMapping("/comment/{id}")
->>>>>>> parent of 05c785a (save point 4)
     public CmtResponseDto updatecmt(@PathVariable Long id,@RequestBody CmtRequestDto cmtRequestDto){
         return cmtService.updatecmt(id,cmtRequestDto);
     }

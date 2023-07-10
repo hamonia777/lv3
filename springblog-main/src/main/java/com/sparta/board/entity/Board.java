@@ -29,26 +29,19 @@ public class Board extends Timestamped{
     @Column(name="commnetlist",nullable = true)
     List<Cmt> commentlist;
 
-<<<<<<< HEAD
 
     public Board(PostRequestDto requestDto) {
         this.username = requestDto.getUsername();;
         this.title = requestDto.getTitle();
         this.contents = requestDto.getContents();
     }
-=======
-    public void setList(List<Cmt> commentlist){
-        this.commentlist=commentlist;
-    }
+
     public Board(PostRequestDto requestDto, String username) {
         this.username = username;
         this.title = requestDto.getTitle();
         this.contents = requestDto.getContents();
     }
-    public void addCmt(Cmt cmt) {
-        this.commentlist.add(cmt);
-    }
->>>>>>> parent of 05c785a (save point 4)
+
     public void update(PostRequestDto requestDto){
         this.title = requestDto.getTitle();
         this.contents = requestDto.getContents();
