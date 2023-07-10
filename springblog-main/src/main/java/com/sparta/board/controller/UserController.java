@@ -3,6 +3,7 @@ package com.sparta.board.controller;
 import com.sparta.board.dto.LoginRequestDto;
 import com.sparta.board.dto.MessageResponseDto;
 import com.sparta.board.dto.SignupRequestDto;
+import com.sparta.board.service.BoardService;
 import com.sparta.board.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -23,21 +24,17 @@ import java.util.List;
 @RequestMapping("/api")
 public class UserController {
 
+    private final BoardService boardService;
     private final UserService userService;
-
-    @PostMapping("/user/login")
-    public MessageResponseDto login(@RequestBody LoginRequestDto requestDto, HttpServletResponse res) {
-        return userService.login(requestDto, res);
+    @PostMapping("/user/signup")
+    public String signup(@RequestBody @Valid SignupRequestDto requestDto){
+        userService.signup(requestDto);
+        return "가입완료";
     }
 
-    @PostMapping("/user/signup")
-    public MessageResponseDto signup(@Valid @RequestBody SignupRequestDto requestDto, BindingResult bindingResult) {
-        List<FieldError> fieldErrors = bindingResult.getFieldErrors();
-        if(fieldErrors.size() > 0) {
-            for (FieldError fieldError : bindingResult.getFieldErrors()) {
-                log.error(fieldError.getField() + " 필드 : " + fieldError.getDefaultMessage());
-            }
-        }
-        return userService.signup(requestDto);
+    @PostMapping("/user/login")
+    public String login(@RequestBody LoginRequestDto requestDto, HttpServletResponse res){
+        userService.login(requestDto,res);
+        return "로그인 완료";
     }
 }

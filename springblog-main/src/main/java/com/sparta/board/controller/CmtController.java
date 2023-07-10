@@ -15,20 +15,23 @@ public class CmtController {
     @PostMapping("/comment")
     public CmtResponseDto createcmt(@RequestBody CmtRequestDto cmtRequestDto){
         CmtResponseDto cmtResponseDto =cmtService.createcmt(cmtRequestDto);
-//        cmtService.insertcmt(cmtRequestDto.getPostid());
         return cmtResponseDto;
     }
 
-    @PostMapping("/comment/board")
+<<<<<<< HEAD
+    @PutMapping("/comment/{id}")//댓글 번호
+=======
+    @GetMapping("/comment/board")
     public PostResponseDto insertcmt(@RequestBody CmtRequestDto cmtRequestDto){
         return cmtService.insertcmt(cmtRequestDto.getPostid());
     }
 
     @PutMapping("/comment/{id}")
+>>>>>>> parent of 05c785a (save point 4)
     public CmtResponseDto updatecmt(@PathVariable Long id,@RequestBody CmtRequestDto cmtRequestDto){
         return cmtService.updatecmt(id,cmtRequestDto);
     }
-    @DeleteMapping("/comment/{id}")
+    @DeleteMapping("/comment/{id}")//댓글 번호
     public void deletecmt(@PathVariable Long id){
         cmtService.deletecmt(id);
     }

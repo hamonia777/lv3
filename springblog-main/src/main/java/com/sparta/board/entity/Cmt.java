@@ -19,7 +19,7 @@ public class Cmt extends Timestamped {
     private Long postid;
     private String username;
     private String comment;
-    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "board")
     private Board board;
 

@@ -6,14 +6,12 @@ import com.sparta.board.dto.PostRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
-@Setter
 @Table(name = "board")
 @NoArgsConstructor
 public class Board extends Timestamped{
@@ -27,10 +25,20 @@ public class Board extends Timestamped{
     @Column(name = "contents", nullable = false, length = 500)
     private String contents;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "board", cascade = CascadeType.PERSIST)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "board")
+    @Column(name="commnetlist",nullable = true)
     List<Cmt> commentlist;
-    public List<Cmt> getCommentlist(){
-        return this.commentlist;
+
+<<<<<<< HEAD
+
+    public Board(PostRequestDto requestDto) {
+        this.username = requestDto.getUsername();;
+        this.title = requestDto.getTitle();
+        this.contents = requestDto.getContents();
+    }
+=======
+    public void setList(List<Cmt> commentlist){
+        this.commentlist=commentlist;
     }
     public Board(PostRequestDto requestDto, String username) {
         this.username = username;
@@ -38,11 +46,9 @@ public class Board extends Timestamped{
         this.contents = requestDto.getContents();
     }
     public void addCmt(Cmt cmt) {
-        if (this.commentlist == null) {
-            this.commentlist = new ArrayList<>();
-        }
         this.commentlist.add(cmt);
     }
+>>>>>>> parent of 05c785a (save point 4)
     public void update(PostRequestDto requestDto){
         this.title = requestDto.getTitle();
         this.contents = requestDto.getContents();

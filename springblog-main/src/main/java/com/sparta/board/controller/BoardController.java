@@ -18,8 +18,8 @@ public class BoardController {
     private final BoardService boardService;
 
     @PostMapping("/post") // 게시글 작성
-    public PostResponseDto createPost(@RequestBody PostRequestDto requestDto, HttpServletRequest req){
-        return boardService.createPost(requestDto, req);
+    public PostResponseDto createPost(@RequestBody PostRequestDto requestDto){
+        return boardService.createPost(requestDto);
     }
 
     @GetMapping("/posts") //전체 게시글 조회
