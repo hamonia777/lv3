@@ -19,13 +19,14 @@ public class Cmt extends Timestamped {
     private Long postid;
     private String username;
     private String comment;
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "board")
+    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "board", insertable = false, updatable = false)
     private Board board;
 
     public Cmt(CmtRequestDto cmtRequestDto, String username) {
         this.postid = cmtRequestDto.getPostid();
         this.comment = cmtRequestDto.getComment();
+        this.username=username;
     }
 
     public Cmt(Cmt cmt) {

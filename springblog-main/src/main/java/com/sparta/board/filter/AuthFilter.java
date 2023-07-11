@@ -3,8 +3,6 @@ package com.sparta.board.filter;
 import com.sparta.board.entity.User;
 import com.sparta.board.jwt.JwtUtil;
 import com.sparta.board.repository.UserRepository;
-import com.sparta.board.jwt.JwtUtil;
-import com.sparta.board.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,7 +15,7 @@ import java.io.IOException;
 
 @Slf4j(topic = "AuthFilter")
 @Component
-@Order(1)
+@Order(2)
 public class AuthFilter implements Filter {
 
     private final UserRepository userRepository;
@@ -27,7 +25,7 @@ public class AuthFilter implements Filter {
         this.userRepository = userRepository;
         this.jwtUtil = jwtUtil;
     }
-
+    String username;
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
@@ -41,10 +39,9 @@ public class AuthFilter implements Filter {
         } else {
             // 나머지 API 요청은 인증 처리 진행
             // 토큰 확인
-            log.info("here?");
-            String tokenValue = jwtUtil.getTokenFromRequest(httpServletRequest);
-
-            if (StringUtils.hasText(tokenValue)) { // 토큰이 존재하면 검증 시작
+            String tokenValue = httpServletRequest.getHeader("Authorization");
+//            String tokenValue = jwtUtil.getTokenFromRequest(httpServletRequest);
+             if (StringUtils.hasText(tokenValue)) { // 토큰이 존재하면 검증 시작
                 // JWT 토큰 substring
                 String token = jwtUtil.substringToken(tokenValue);
 
@@ -59,7 +56,8 @@ public class AuthFilter implements Filter {
                 User user = userRepository.findByUsername(info.getSubject()).orElseThrow(() ->
                         new NullPointerException("Not Found User")
                 );
-
+                username= user.getUsername();
+                jwtUtil.setUsername(username);
                 request.setAttribute("user", user);
                 chain.doFilter(request, response); // 다음 Filter 로 이동
             } else {

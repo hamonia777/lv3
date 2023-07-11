@@ -2,6 +2,7 @@ package com.sparta.board.dto;
 
 import com.sparta.board.entity.Board;
 import com.sparta.board.entity.Cmt;
+import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,8 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class CmtResponseDto {
-
-    private Long postid;
+     private Long postid;
     private Long cmt_num;
     private String comment;
     private String username;

@@ -18,8 +18,8 @@ public class BoardController {
     private final BoardService boardService;
 
     @PostMapping("/post") // 게시글 작성
-    public PostResponseDto createPost(@RequestBody PostRequestDto requestDto){
-        return boardService.createPost(requestDto);
+    public PostResponseDto createPost(@RequestBody PostRequestDto requestDto, HttpServletRequest req){
+        return boardService.createPost(requestDto, req);
     }
 
     @GetMapping("/posts") //전체 게시글 조회
@@ -33,12 +33,12 @@ public class BoardController {
     }
 
     @PutMapping("/post/{id}") // 게시글 수정
-    public PostResponseDto updatePost(@PathVariable Long id, @RequestBody PostRequestDto requestDto, HttpServletRequest req){
+    public MessageResponseDto updatePost(@PathVariable Long id, @RequestBody PostRequestDto requestDto, HttpServletRequest req){
         return boardService.updatePost(id, requestDto, req);
     }
 
     @DeleteMapping("/post/{id}") //게시글 삭제
-    public MessageResponseDto deletePost(@PathVariable Long id, @RequestBody PostRequestDto requestDto, HttpServletRequest req){
-        return boardService.deletePost(id, requestDto, req);
+    public MessageResponseDto deletePost(@PathVariable Long id){
+        return boardService.deletePost(id);
     }
 }
