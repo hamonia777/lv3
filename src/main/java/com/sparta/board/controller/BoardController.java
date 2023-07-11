@@ -46,4 +46,5 @@ public class BoardController {
         boardService.deletePost(id, req);
         return ResponseEntity.ok().body(new MessageResponseDto("삭제 완료", HttpStatus.OK.value()));
     }
+
 }

@@ -1,6 +1,8 @@
 package com.sparta.board.controller;
 
-import com.sparta.board.dto.*;
+import com.sparta.board.dto.CommentRequestDto;
+import com.sparta.board.dto.CommentResponseDto;
+import com.sparta.board.dto.MessageResponseDto;
 import com.sparta.board.service.CommentService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;

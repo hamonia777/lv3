@@ -1,9 +1,6 @@
 package com.sparta.board.jwt;
 
-import com.sparta.board.entity.Comment;
-import com.sparta.board.entity.User;
 import com.sparta.board.entity.UserRoleEnum;
-import com.sparta.board.repository.UserRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
@@ -109,4 +106,5 @@ public class JwtUtil {
         Claims claims = getUserInfoFromToken(token);
         return claims.getSubject();
     }
+
 }

@@ -29,8 +29,7 @@ public class CommentService {
         Board board = boardRepository.findById(requestDto.getPost_id()).orElseThrow(() ->
                 new IllegalArgumentException("게시글을 찾을 수 없습니다."));
         User user = userRepository.findByUsername(jwtUtil.findUsername(req)).orElseThrow(
-                () -> new IllegalArgumentException("회원을 찾을 수 없습니다.")
-        );
+                () -> new IllegalArgumentException("회원을 찾을 수 없습니다."));
         Comment comment = new Comment(requestDto, user, board);
         Comment saveComment = commentRepository.save(comment);
         return new CommentResponseDto(saveComment);
@@ -41,9 +40,8 @@ public class CommentService {
         Comment comment = commentRepository.findById(id).orElseThrow(()->
                 new IllegalArgumentException("댓글을 찾을 수 없습니다."));
         User user = userRepository.findByUsername(jwtUtil.findUsername(req)).orElseThrow(
-                () -> new IllegalArgumentException("회원을 찾을 수 없습니다.")
-        );
-        if(!(user.getRole() == UserRoleEnum.ADMIN)){
+                () -> new IllegalArgumentException("회원을 찾을 수 없습니다."));
+        if(!(user.getRole().equals(UserRoleEnum.ADMIN))){
             if(!user.getUsername().equals(comment.getUser().getUsername())){
                 throw new IllegalArgumentException("작성자만 삭제/수정할 수 있습니다.");
             }
@@ -56,9 +54,8 @@ public class CommentService {
         Comment comment = commentRepository.findById(id).orElseThrow(()->
                 new IllegalArgumentException("댓글을 찾을 수 없습니다."));
         User user = userRepository.findByUsername(jwtUtil.findUsername(req)).orElseThrow(
-                () -> new IllegalArgumentException("회원을 찾을 수 없습니다.")
-        );
-        if(!(user.getRole() == UserRoleEnum.ADMIN)){
+                () -> new IllegalArgumentException("회원을 찾을 수 없습니다."));
+        if(!(user.getRole().equals(UserRoleEnum.ADMIN))){
             if(!user.getUsername().equals(comment.getUser().getUsername())){
                 throw new IllegalArgumentException("작성자만 삭제/수정할 수 있습니다.");
             }
