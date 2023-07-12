@@ -14,7 +14,7 @@ public class Comment extends Timestamped{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cmt_num;
 
-    private String comment;
+    private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "username")
@@ -25,12 +25,12 @@ public class Comment extends Timestamped{
     private Board board;
 
     public Comment(CommentRequestDto requestDto, User user, Board board){
-        this.comment = requestDto.getComment();
+        this.content = requestDto.getContent();
         this.user = user;
         this.board = board;
     }
 
     public void update(CommentRequestDto requestDto){
-        this.comment = requestDto.getComment();
+        this.content = requestDto.getContent();
     }
 }
