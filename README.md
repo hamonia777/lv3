@@ -54,6 +54,7 @@
 
 ## API 명세서
 
+__[API 명세서 링크](https://scandalous-uncle-516.notion.site/Lv-3-API-ae9dd1aa33844505a7fec73aa4a58693)__
 
 ## ERD
 
